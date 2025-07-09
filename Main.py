@@ -21,7 +21,12 @@ sleep = st.slider("하루 수면 시간", 0, 12, 6)
 meals = st.radio("오늘 식사하셨나요?", ["예", "아니오"])
 mood = st.selectbox("현재 기분은?", ["좋음", "보통", "나쁨"])
 
-# 3. 간호 추천 결과
+# 3. 식단 알레르기 조사
+st.header("3️⃣ 식단 알레르기 및 특이사항")
+allergies = st.multiselect("알레르기가 있는 식품을 선택하세요", ["견과류", "우유", "계란", "생선", "대두", "밀", "없음"])
+preference = st.selectbox("식사 선호도", ["일반식", "채식", "저염식", "고단백식"])
+
+# 4. 간호 추천 결과
 if st.button("간호 추천 받기"):
     st.subheader(f"✅ {name}님의 간호 서비스 요약")
 
@@ -55,6 +60,25 @@ if st.button("간호 추천 받기"):
         st.error("비만입니다. 적극적인 관리가 필요합니다")
         st.markdown("[🔥 전신 다이어트 운동 보기](https://youtu.be/UBMk30rjy0o)")
 
+    st.markdown("### 🍱 맞춤 식단 제안")
+    if meals == "아니오":
+        st.warning("식사를 거르셨습니다. 규칙적인 식사가 필요합니다.")
+    if "없음" in allergies:
+        allergies = []
+    if allergies:
+        st.write(f"⚠️ 알레르기 주의 식품: {', '.join(allergies)}")
+    st.write(f"🥗 추천 식사 유형: {preference}")
+
+    # 식단 예시
+    if preference == "채식":
+        st.markdown("- 샐러드, 두부구이, 버섯볶음 등")
+    elif preference == "저염식":
+        st.markdown("- 저염 미역국, 찐 감자, 나물반찬")
+    elif preference == "고단백식":
+        st.markdown("- 닭가슴살, 삶은 달걀, 그릭요거트")
+    else:
+        st.markdown("- 일반 백반식, 국과 밑반찬 중심")
+
     st.markdown("### 🎧 정서 케어 콘텐츠")
     if mood == "나쁨" or sleep < 6:
         st.write("- 😴 수면 부족 또는 기분 저하 감지됨")
@@ -67,8 +91,8 @@ if st.button("간호 추천 받기"):
 
     st.success("Nurseflix는 건강한 삶을 위해 함께합니다")
 
-# 4. 지역 연계 서비스 + 1:1 간호사 매칭
-st.header("3️⃣ 지역 연계 간호사 매칭")
+# 5. 지역 연계 서비스 + 1:1 간호사 매칭
+st.header("4️⃣ 지역 연계 간호사 매칭")
 if name:
     st.write(f"📍 [{region}] 지역 간호사 매칭 중...")
     # 임의 매칭 예시
